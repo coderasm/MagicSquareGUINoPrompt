@@ -13,8 +13,8 @@ namespace MagicSquareGUINoPrompt
   public partial class magicSquares : Form
   {
     private List<int[,]> grids = new List<int[,]>();
-    private int clientWidth = 900;
-    private int clientHeight = 500;
+    private int clientWidth = 860;
+    private int clientHeight = 390;
     public magicSquares()
     {
       InitializeComponent();
@@ -41,16 +41,15 @@ namespace MagicSquareGUINoPrompt
       //compute widths
       for (int i = 0; i < grids.Count; i++)
       {
-        var nSquares = grids.ElementAt(0).GetLength(0);
-        var width = nSquares * smallSquareDimension + (nSquares + 1) * spacing;
-        widths[0] = width;
+        var nSquares = grids.ElementAt(i).GetLength(0);
+        widths[i] = nSquares * smallSquareDimension + (nSquares + 1) * spacing;
       }
 
       for (int i = 0; i < grids.Count; i++)
       {
         var x = 0;
         var y = 0;
-        var xOffset = 0;
+        var xOffset = spacingBetweenGrids;
         //size all elements
         var largeSquareDimension = widths[i];
         //compute offset
@@ -74,9 +73,11 @@ namespace MagicSquareGUINoPrompt
         //move to first square/cell
         var xInitial = x + spacing;
         x = xInitial;
-        for (int t = 0; t < grids.ElementAt(t).GetLength(0); t++)
+        y += spacing;
+        //draw grid
+        for (int t = 0; t < grids.ElementAt(i).GetLength(0); t++)
         {
-          for (int p = 0; p < grids.ElementAt(t).GetLength(1); p++)
+          for (int p = 0; p < grids.ElementAt(i).GetLength(1); p++)
           {
             //draw small square/cell
             var smallRect = new Rectangle(x, y, smallSquareDimension, smallSquareDimension);
@@ -85,16 +86,16 @@ namespace MagicSquareGUINoPrompt
             //draw number
             brush.Color = Color.Black;
             var font = new Font("Arial", smallSquareDimension * .50F);
-            var textX = x + smallSquareDimension / (grids.ElementAt(t)[t, p] > 9 ? 10 : 4);
+            var textX = x + smallSquareDimension / (grids.ElementAt(i)[t, p] > 9 ? 10 : 4);
             var textY = y + smallSquareDimension / 5;
             var format = new StringFormat();
-            e.Graphics.DrawString(grids.ElementAt(t)[t, p].ToString(), font, brush, textX, textY, format);
+            e.Graphics.DrawString(grids.ElementAt(i)[t, p].ToString(), font, brush, textX, textY, format);
             brush.Color = Color.LimeGreen;
             //move to next cell
             x = x + smallSquareDimension + spacing;
           }
           //move to next row
-          x += xInitial;
+          x = xInitial;
           y = y + smallSquareDimension + spacing;
         }
       };

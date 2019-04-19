@@ -37,6 +37,7 @@
       this.ClientSize = new System.Drawing.Size(800, 450);
       this.Name = "magicSquares";
       this.Text = "Magic Squares";
+      this.Paint += new System.Windows.Forms.PaintEventHandler(this.onPaint);
       this.ResumeLayout(false);
 
     }
